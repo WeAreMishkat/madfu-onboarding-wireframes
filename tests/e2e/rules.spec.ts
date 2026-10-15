@@ -157,7 +157,7 @@ test('every screen has a gallery state and every gallery state renders', async (
 });
 
 test('documentation routes render (maps, rules, handover, overview)', async ({ page }) => {
-  await page.goto('./#/');
+  await page.goto('./#/overview');
   await expect(page.getByTestId('global-ux-note')).toContainText('All screens require complete UX/UI validation');
   for (const m of JOURNEY_MAPS) {
     await page.goto(`./#/map/${m.id}`);

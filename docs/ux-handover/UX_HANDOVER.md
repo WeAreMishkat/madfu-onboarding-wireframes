@@ -19,12 +19,12 @@
 | S03 | Business category | Both | OTP verified and revenue routing = self-onboarding. | Next | CR → S04 CR verification. Freelancer → S06 Nafath. | 3 |
 | S04 | Business verification (CR lookup) | Registered Business | Category decision = continue. | Continue | S05 Authorized person selection. | 7 |
 | S05 | Authorized person selection | Registered Business | S04 result valid or expired. | Continue (disabled until a selection is made) | S06 Nafath verification. | 6 |
-| S06 | Nafath identity verification | Both | CR: person selected (S05). Freelancer: category decision = continue. | Send verification request → (wait) → Continue | Verified: CR → S08; Freelancer → S07 certificate selection. | 8 |
+| S06 | Nafath identity verification | Both | CR: person selected (S05). Freelancer: category decision = continue. | Send verification request → (wait) → Continue | Verified: CR → S08; Freelancer → S07 certificate selection. | 9 |
 | S07 | Freelancing certificate selection | Freelancer | Nafath verified. | Continue | S08 Business details. | 6 |
 | S07-M | Manual certificate entry | Freelancer | Nafath unverified (2 failures) or "Enter certificate manually" from S07. | Continue | S08 Business details (IBAN collected without ownership check when Nafath failed). | 2 |
-| S08 | Business details (shared) | Both | CR: Nafath finished (verified or exhausted) or no eligible person. Freelancer: certificate selected or entered. | Next | Contract allowed → S09. Not allowed (Nafath unverified / blocking review flag) → O-B. | 9 |
-| S09 | Merchant agreement (contract) | Both | S08 submitted and contract eligibility = allowed. | Accept and submit (simulated) | O-A Application submitted. | 3 |
-| S09-D | Agreement not accepted | Both | Decline confirmed on S09. | Review agreement | S09 Contract. | 1 |
+| S08 | Business details (shared) | Both | CR: Nafath finished (verified or exhausted) or no eligible person. Freelancer: certificate selected or entered. | Next | Contract allowed → S09. Not allowed (Nafath unverified / blocking review flag) → O-B. | 10 |
+| S09 | Merchant agreement (contract) | Both | S08 submitted and contract eligibility = allowed. | Accept and submit (simulated) | O-A Application submitted. | 4 |
+| S09-D | Agreement not accepted | Both | Decline confirmed on S09. | Review agreement | S09 Contract. | 2 |
 | O-A | Outcome A — Application submitted | Both | Contract accepted. | None (final state) | End of journey. | 1 |
 | O-B | Outcome B — Application received (manual verification) | Both | S08 submitted and contract not allowed. | None (final state) | Manual verification by Madfu team. | 1 |
 | O-C | Outcome C — Interest received (sales lead) | Both | Revenue routing = sales lead, or category decision = stop. | None (final state) | Sales / business review team contacts the applicant. | 1 |
@@ -169,7 +169,7 @@
 - **Backend behaviour:** Max 2 attempts per application — shared across individuals.; Outcomes: verified, rejected, timed out, technical failure.; Each request recorded in the cost ledger.
 - **Business rules:** Unverified Nafath → contract signing disabled.
 - **UX/UI notes:** Very large circular number; numbered instructions.; Show remaining attempts after a failure.; Waiting state must survive refresh. — see G-UX.
-- **States:** [Ready to send (CR, selected person)](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S06--cr-ready) · [Waiting — large matching number](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S06--waiting) · [Rejected — 1 attempt remaining (CR)](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S06--rejected) · [Timed out — 1 attempt remaining (Freelancer)](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S06--timeout) · [Technical failure — no attempt consumed](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S06--technical) · [Verified](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S06--verified) · [Two unsuccessful attempts — manual path](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S06--exhausted) · [Ready to send (Freelancer, National ID from entry)](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S06--fl-ready)
+- **States:** [Ready to send (CR, selected person)](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S06--cr-ready) · [Waiting — large matching number](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S06--waiting) · [Rejected — 1 attempt remaining (CR)](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S06--rejected) · [Timed out — 1 attempt remaining (Freelancer)](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S06--timeout) · [Technical failure — no attempt consumed](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S06--technical) · [Verified](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S06--verified) · [Two unsuccessful attempts — manual path](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S06--exhausted) · [Waiting — Freelancer (National ID from entry)](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S06--fl-waiting) · [Ready to send (Freelancer, National ID from entry)](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S06--fl-ready)
 
 ### S07 — Freelancing certificate selection
 
@@ -211,7 +211,7 @@
 - **Backend behaviour:** Format check (SA + 22 digits, mod-97) ≠ ownership check.; Ownership API on field exit; never repeated for an unchanged value.; CR: match to registered business. Freelancer: match to National ID. Freelancer with failed Nafath: no API call.; Editing IBAN invalidates its verification result.
 - **Business rules:** Max 2 unsuccessful ownership attempts per application.; IBAN failure never blocks the contract when Nafath succeeded.
 - **UX/UI notes:** Inline status chip: Verifying / Verified / Not verified / Technical error.; Values preserved across navigation, retries and refresh. — see G-UX.
-- **States:** [Empty form](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--empty) · [IBAN verified, VAT yes, both channels](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--verified) · [IBAN verifying](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--verifying) · [IBAN not verified (1 of 2)](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--not-verified) · [IBAN not verified twice — may continue](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--failed-max) · [IBAN technical error](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--technical) · [IBAN provider outage — pending (not a failure)](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--pending) · [Freelancer, Nafath unverified — IBAN collected only](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--not-checked) · [Validation errors](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--errors)
+- **States:** [Empty form](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--empty) · [IBAN verified, VAT yes, both channels](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--verified) · [Freelancer — IBAN verified against National ID](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--fl-verified) · [IBAN verifying](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--verifying) · [IBAN not verified (1 of 2)](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--not-verified) · [IBAN not verified twice — may continue](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--failed-max) · [IBAN technical error](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--technical) · [IBAN provider outage — pending (not a failure)](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--pending) · [Freelancer, Nafath unverified — IBAN collected only](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--not-checked) · [Validation errors](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S08--errors)
 
 ### S09 — Merchant agreement (contract)
 
@@ -225,7 +225,7 @@
 - **Backend behaviour:** Generic acceptance placeholder; signature technology not decided (D-02).; Acceptance recorded with contract version.
 - **Business rules:** Not legally binding. No real contract text or signature credentials.
 - **UX/UI notes:** Scrollable embedded viewer; decline clearly identifiable but secondary. — see G-UX.
-- **States:** [Agreement viewer](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S09--default) · [Acceptance without confirmation](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S09--agree-error) · [Decline confirmation](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S09--decline-confirm)
+- **States:** [Agreement viewer](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S09--default) · [Agreement — Freelancer](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S09--fl) · [Acceptance without confirmation](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S09--agree-error) · [Decline confirmation](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S09--decline-confirm)
 
 ### S09-D — Agreement not accepted
 
@@ -239,7 +239,7 @@
 - **Backend behaviour:** Internal CONTRACT_DECLINED flag; status CONTRACT_PENDING; not submitted.
 - **Business rules:** Final decline handling pending (D-09).
 - **UX/UI notes:** Do not show success styling. — see G-UX.
-- **States:** [Agreement declined — saved, not submitted](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S09-D--declined)
+- **States:** [Agreement declined — saved, not submitted](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S09-D--declined) · [Agreement declined — Freelancer](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/gallery/S09-D--fl)
 
 ### O-A — Outcome A — Application submitted
 

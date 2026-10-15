@@ -6,10 +6,10 @@
 
 | Suite | Passed | Failed | Total |
 | --- | --- | --- | --- |
-| Unit — rules, engine, all scenarios at engine level (Vitest) | 47 | 0 | 47 |
-| End-to-end — real UI in Chromium (Playwright) | 44 | 0 | 44 |
+| Unit — rules, engine, all scenarios at engine level (Vitest) | 55 | 0 | 55 |
+| End-to-end — real UI in Chromium (Playwright) | 84 | 0 | 84 |
 
-Last end-to-end run: 2026-10-15T13:12:08.119Z. Flaky: 0.
+Last end-to-end run: 2026-10-15T16:04:31.809Z. Flaky: 0.
 
 ## Scenario coverage (each driven through the real screens)
 
@@ -49,6 +49,46 @@ Last end-to-end run: 2026-10-15T13:12:08.119Z. Flaky: 0.
 
 | Check | Result |
 | --- | --- |
+| board is the home page and renders every node, connection and live wireframe | PASS |
+| exported board: no node overlaps and no label covers a node or another label | PASS |
+| search finds screens and decisions and opens their details | PASS |
+| details panel lists purpose, fields, validations, actions, next destinations; preview opens and keeps board position | PASS |
+| every screen node preview opens | PASS |
+| zoom, pan and fit change the viewport | PASS |
+| sub-flows collapse and reset restores everything | PASS |
+| journey highlight #1 — CR — Self-onboarding, all verified | PASS |
+| journey highlight #2 — CR — Below-revenue sales lead | PASS |
+| journey highlight #3 — CR — Above-revenue sales lead | PASS |
+| journey highlight #4 — CR — Duplicate account | PASS |
+| journey highlight #5 — CR — Blocked category | PASS |
+| journey highlight #6 — CR — Expired registration | PASS |
+| journey highlight #7 — CR — Nafath rejected twice | PASS |
+| journey highlight #8 — CR — Nafath timeout twice | PASS |
+| journey highlight #9 — CR — Nafath verified, IBAN failed twice | PASS |
+| journey highlight #10 — CR — No individual authorized persons | PASS |
+| journey highlight #11 — Freelancer — All verified | PASS |
+| journey highlight #12 — Freelancer — Multiple certificates | PASS |
+| journey highlight #13 — Freelancer — Duplicate National ID | PASS |
+| journey highlight #14 — Freelancer — Nafath failed twice | PASS |
+| journey highlight #15 — Freelancer — Manual certificate entry | PASS |
+| journey highlight #16 — Freelancer — Blocked category | PASS |
+| journey highlight #17 — Freelancer — CR-only category flag | PASS |
+| journey highlight #18 — Freelancer — IBAN verification failed twice | PASS |
+| journey highlight #19 — Any applicant — OTP errors | PASS |
+| journey highlight #20 — Any applicant — API failure and retry | PASS |
+| journey highlight #21 — Any applicant — Resume incomplete application | PASS |
+| journey highlight #22 — Eligible applicant — Contract declined | PASS |
+| journey highlight #23 — Freelancer — No certificates returned | PASS |
+| journey highlight #24 — Freelancer — Certificate/category mismatch | PASS |
+| journey highlight #25 — Freelancer — Certificate maps to restricted category | PASS |
+| journey highlight #26 — Any applicant — IBAN provider outage | PASS |
+| journey highlight #27 — Any applicant — Nafath technical failure then verified | PASS |
+| journey highlight #28 — Any applicant — Category pending business review | PASS |
+| journey highlight #29 — Any applicant — Mobile reused across identities | PASS |
+| journey step navigation reaches the outcome | PASS |
+| prototype links work from the board | PASS |
+| board exports are downloadable | PASS |
+| coverage page reports zero problems | PASS |
 | entry: required-field and format validation block the transition | PASS |
 | entry: applicant type switches the identification field and resets it | PASS |
 | revenue routing: CR outside range never sees self-onboarding screens | PASS |

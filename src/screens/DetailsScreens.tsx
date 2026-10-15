@@ -99,9 +99,16 @@ export function S07Certificates() {
         </div>
       )}
       {c.status === 'loaded' && selectable.length === 0 && (
-        <Alert kind="info" title="All your certificates are already linked to a Madfu account">
-          Sign in to your existing account, or contact our support team.
-        </Alert>
+        <>
+          <Alert kind="info" title="All your certificates are already linked to a Madfu account">
+            Sign in to your existing account, or enter a different certificate number for our team to review.
+          </Alert>
+          <div>
+            <Button variant="secondary" testId="cert-all-attached-manual" onClick={() => engine.enterCertificateManually()}>
+              Enter a different certificate number
+            </Button>
+          </div>
+        </>
       )}
       {c.status === 'loaded' && c.list.length > 0 && <Muted>Certificate details come from the official freelancing platform and can't be edited here.</Muted>}
     </ScreenBody>

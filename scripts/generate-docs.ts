@@ -24,6 +24,9 @@ import { GALLERY_STATES } from '../src/journeys/galleryStates';
 import { JOURNEY_MAPS, LEGEND_MAP } from '../src/journeys/maps';
 import { SCENARIOS } from '../src/scenarios/scenarios';
 import { PROJECT_META } from '../src/app/meta';
+import { deriveAllJourneys } from '../src/board/journeys';
+import { buildCoverage } from '../src/board/coverage';
+import { BOARD_NODES } from '../src/board/model';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const write = (rel: string, body: string) => {
@@ -438,5 +441,129 @@ ${table(
 - Accessibility was considered (labels, roles, focusable selectable cards) but not formally audited.
 - Mock integrations prove journey logic only; no real API behaviour, latency or error contracts are verified.
 - Provisional rules are listed in [DECISION_LOG.md](business-rules/DECISION_LOG.md).
+`,
+);
+
+// ---------- Master Board coverage + audit ----------
+const journeys = await deriveAllJourneys();
+const cov = buildCoverage(journeys);
+write(
+  'docs/BOARD_COVERAGE.md',
+  `
+# Master Board — audit and coverage report
+
+${GENERATED}
+
+Interactive board: ${PROJECT_META.siteUrl} · Exports: [PDF](../deliverables/Madfu_Onboarding_Master_Board.pdf) · [SVG](../deliverables/Madfu_Onboarding_Master_Board.svg)
+
+## How the board stays in sync with the implementation
+
+- Screen nodes reference implemented screen IDs and render real gallery states built by the journey engine (\`src/board/model.ts\`).
+- Every connection carries its business condition and a guard evaluated against engine runs.
+- Each of the ${cov.counts.journeys} scenarios is executed on the engine (\`src/scenarios/run.ts\`); its screen trace is mapped onto board connections (\`src/board/journeys.ts\`). A transition the board cannot represent fails \`tests/unit/board.test.ts\`.
+
+## Totals
+
+${table(
+  ['Metric', 'Count'],
+  [
+    ['Screen nodes (incl. per-path instances)', cov.counts.screenNodes],
+    ['Distinct screens', cov.counts.distinctScreens],
+    ['Decision nodes', cov.counts.decisionNodes],
+    ['Backend / integration nodes', cov.counts.processNodes],
+    ['Manual-review / flag nodes', cov.counts.manualNodes],
+    ['Connectors', cov.counts.connectorNodes],
+    ['Connections (edges)', cov.counts.edges],
+    ['…of which retry loops', cov.counts.loops],
+    ['Supported journeys', cov.counts.journeys],
+    ['Problems', cov.problems.length],
+  ],
+)}
+
+## Problems
+
+${cov.problems.length ? cov.problems.map((p) => `- ${p}`).join('\n') : 'None — every engine transition is represented; every node is reachable, connected and non-overlapping; every screen has a live wireframe.'}
+
+## Audit findings (before building the board)
+
+${table(
+  ['#', 'Finding', 'Resolution'],
+  [
+    [
+      'A-1',
+      'S07: when every returned certificate is already attached to an existing account, the screen had no forward action (dead end).',
+      'Fixed: “Enter a different certificate number” → S07-M (manual review).',
+    ],
+    ['A-2', 'Shared screens (S06, S08, S09, S09-D, outcomes) serve both paths.', 'Separate visual instances per path, same screen ID and component; avoids crossing connectors.'],
+    [
+      'A-3',
+      'Generic “Back” navigation exists on most screens (engine \`backTarget\`).',
+      'Not drawn to keep the board readable; listed below and in each details panel. Back moves that carry business meaning (change authorized person, review agreement, edit CR) are drawn.',
+    ],
+    ['A-4', 'Resume (S00) can return to any step.', 'Drawn as a connector “Continue at the last saved step”.'],
+    ['A-5', 'S01-F (add another certificate) has no implementation.', 'Shown as dashed FUTURE FLOW node; excluded from reachability requirements for onward transitions.'],
+  ],
+)}
+
+### Permitted back navigation (not drawn)
+
+${table(
+  ['From', 'Back to'],
+  [
+    ['S02 OTP', 'S01 (also “Edit mobile number”)'],
+    ['S03 Category', 'S01'],
+    ['S04 CR verification', 'S03'],
+    ['S05 Authorized person', 'S04'],
+    ['S06 Nafath (before any attempt)', 'S05 (CR) / S03 (Freelancer)'],
+    ['S07 Certificates', 'S06'],
+    ['S07-M Manual certificate', 'S07 (verified) / S06 (unverified)'],
+    ['S08 Business details', 'S05 / S06 (CR) · S07 / S07-M (Freelancer)'],
+    ['S09 Agreement', 'S08'],
+    ['S01-X Existing account', 'S01'],
+    ['S01-F Future flow', 'S01-X'],
+  ],
+)}
+
+## Screens
+
+${table(
+  ['Screen', 'Name', 'Board instances', 'Incoming', 'Reachable', 'Journeys'],
+  cov.screens.map((x) => [x.id, x.name, x.instances.join(', '), x.incoming, x.reachable ? 'Yes' : 'No', x.journeys]),
+)}
+
+## Decisions
+
+${table(
+  ['Node', 'Decision', 'Branches', 'Journeys'],
+  cov.decisions.map((d) => [d.id, d.title, d.outgoing.map((o) => `${o.label || '→'} → ${o.target}`).join(' · '), d.journeys]),
+)}
+
+## Journeys (derived from engine runs)
+
+${table(
+  ['Journey', 'Engine screen trace', 'Ends at', 'Board steps', 'Status', 'Board link'],
+  cov.journeys.map((j) => [j.title, j.trace, j.outcome, j.steps, j.ok ? 'Mapped' : j.errors.join('; '), `${PROJECT_META.siteUrl}#/?journey=${j.id}`]),
+)}
+
+## Observed screen transitions
+
+${table(
+  ['From', 'To', 'Journeys'],
+  cov.transitions.map((t) => [t.from, t.to, t.journeys]),
+)}
+
+## Connections
+
+${table(
+  ['Edge', 'Label', 'From', 'To', 'Kind', 'Journeys'],
+  cov.edges.map((e) => [e.id, e.label, e.from, e.to, e.kind, e.journeys]),
+)}
+
+## Node inventory
+
+${table(
+  ['Node', 'Kind', 'Lane', 'Title', 'Screen'],
+  BOARD_NODES.map((n) => [n.id, n.kind, n.lane, n.title, n.screenId ?? '—']),
+)}
 `,
 );

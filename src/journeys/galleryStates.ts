@@ -256,6 +256,7 @@ export const GALLERY_STATES: GalleryState[] = [
         },
       }),
   },
+  { id: 'S06--fl-waiting', screen: 'S06', title: 'Waiting — Freelancer (National ID from entry)', build: () => build({ ...fl, to: 'S06', then: (e) => e.startNafath() }) },
   { id: 'S06--fl-ready', screen: 'S06', title: 'Ready to send (Freelancer, National ID from entry)', build: () => build({ ...fl, to: 'S06' }) },
   // S07
   { id: 'S07--multiple', screen: 'S07', title: 'Multiple certificates', primary: true, build: () => build({ ...fl, sim: { certificatesFixture: 'multiple' }, to: 'S07' }) },
@@ -295,6 +296,12 @@ export const GALLERY_STATES: GalleryState[] = [
     title: 'IBAN verified, VAT yes, both channels',
     primary: true,
     build: () => build({ business: bizFilled, to: 'S08', then: (e) => e.verifyIban() }),
+  },
+  {
+    id: 'S08--fl-verified',
+    screen: 'S08',
+    title: 'Freelancer — IBAN verified against National ID',
+    build: () => build({ ...fl, business: bizFilled, to: 'S08', then: (e) => e.verifyIban() }),
   },
   { id: 'S08--verifying', screen: 'S08', title: 'IBAN verifying', build: () => build({ business: bizMin, to: 'S08', patch: (a) => (a.iban.status = 'verifying') }) },
   {
@@ -354,6 +361,7 @@ export const GALLERY_STATES: GalleryState[] = [
   },
   // S09
   { id: 'S09--default', screen: 'S09', title: 'Agreement viewer', primary: true, build: () => build({ business: bizMin, to: 'S09' }) },
+  { id: 'S09--fl', screen: 'S09', title: 'Agreement — Freelancer', build: () => build({ ...fl, business: bizMin, to: 'S09' }) },
   { id: 'S09--agree-error', screen: 'S09', title: 'Acceptance without confirmation', build: () => build({ business: bizMin, to: 'S09', then: (e) => e.acceptContract(false) }) },
   { id: 'S09--decline-confirm', screen: 'S09', title: 'Decline confirmation', build: () => build({ business: bizMin, to: 'S09', then: (e) => e.requestDecline() }) },
   {
@@ -363,6 +371,21 @@ export const GALLERY_STATES: GalleryState[] = [
     primary: true,
     build: () =>
       build({
+        business: bizMin,
+        to: 'S09',
+        then: (e) => {
+          e.requestDecline();
+          e.confirmDecline();
+        },
+      }),
+  },
+  {
+    id: 'S09-D--fl',
+    screen: 'S09-D',
+    title: 'Agreement declined — Freelancer',
+    build: () =>
+      build({
+        ...fl,
         business: bizMin,
         to: 'S09',
         then: (e) => {

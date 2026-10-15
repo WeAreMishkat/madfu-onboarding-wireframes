@@ -2,7 +2,9 @@
 
 A working, end-to-end, **low-fidelity desktop wireframe prototype** of merchant onboarding for Madfu (Saudi BNPL), covering both applicant types — **Registered Business (CR)** and **Freelancer** — with every branch, decision, fallback and outcome. Built for Product, Engineering, UX/UI, Risk, Compliance and Sales.
 
-- **Live prototype:** https://wearemishkat.github.io/madfu-onboarding-wireframes/
+- **Master Board (home page):** https://wearemishkat.github.io/madfu-onboarding-wireframes/ — the whole onboarding on one interactive canvas
+- **Master Board exports:** [single-page vector PDF](deliverables/Madfu_Onboarding_Master_Board.pdf) · [vector SVG](deliverables/Madfu_Onboarding_Master_Board.svg) · [coverage report](docs/BOARD_COVERAGE.md)
+- **Interactive journey (prototype):** https://wearemishkat.github.io/madfu-onboarding-wireframes/#/prototype
 - **Annotated PDF:** [deliverables/Madfu_Merchant_Onboarding_Wireframes.pdf](deliverables/Madfu_Merchant_Onboarding_Wireframes.pdf) · [download from the site](https://wearemishkat.github.io/madfu-onboarding-wireframes/Madfu_Merchant_Onboarding_Wireframes.pdf)
 - **Journey decision maps:** [docs/journey-map/](docs/journey-map/README.md) · [interactive](https://wearemishkat.github.io/madfu-onboarding-wireframes/#/map/A)
 - **Product rules:** [docs/business-rules/PRODUCT_RULES.md](docs/business-rules/PRODUCT_RULES.md)
@@ -11,6 +13,16 @@ A working, end-to-end, **low-fidelity desktop wireframe prototype** of merchant 
 - **QA report:** [docs/QA_REPORT.md](docs/QA_REPORT.md) · end-state screenshots of all 29 scenarios in [docs/qa-screenshots/](docs/qa-screenshots/)
 
 > **Prototype only.** All data is synthetic. No real SMS, Nafath, government, banking or e-signature service is called. Contract text is a placeholder and not legally binding. Values marked *provisional* are assumptions, not confirmed business rules.
+
+## Master Board
+
+![Master Board overview](deliverables/Madfu_Onboarding_Master_Board_overview.png)
+
+One left-to-right canvas (React Flow) with five swimlanes — shared entry & eligibility, Path A Registered Business, Path B Freelancer, manual review & sales leads, final outcomes. 24 screen nodes render the **live prototype screens** as miniature wireframes; 20 decision cards, 15 backend/integration cards, 11 manual-review/flag cards and 101 labelled connections (13 compact retry loops) show every branch.
+
+- **Generated from the implementation:** `src/board/model.ts` references real screen IDs and gallery states; each connection carries its condition and a guard. `src/board/journeys.ts` runs every scenario on the journey engine and maps its trace onto the board — the unit tests fail if the engine performs a transition the board doesn't show.
+- **Interactions:** pan / zoom / fit, minimap, search, 29 highlightable journeys with Previous / Next step, collapsible sub-flows, compact mode, details panel (purpose, fields, validations, integrations, actions, next destinations, failures, UX notes), full-size interactive preview without leaving the board, “Run in prototype” links, deep links (`#/?journey=cr-all-verified`, `#/?node=cr.S06`).
+- **Exports:** `npm run build && npm run board:export` prints `#/board/export` to one continuous vector PDF page and converts it to SVG with `pdftocairo`.
 
 ## What's inside
 
@@ -46,6 +58,7 @@ npm run build          # type-check + production build to dist/
 npx playwright install chromium
 npm run test:e2e       # Playwright — every scenario through the real UI (serves dist/ on :4391)
 npm run pdf            # renders #/print to deliverables/ + public/ (requires a build)
+npm run board:export   # Master Board → single-page vector PDF + SVG (requires a build and poppler's pdftocairo)
 npm run docs           # regenerates docs/ from the source of truth (+ latest test results)
 ```
 
