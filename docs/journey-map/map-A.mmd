@@ -1,0 +1,29 @@
+flowchart TB
+  S01["S01 Start application<br/>type · ID · revenue · mobile"]:::screen --> D1{"Identity already registered?<br/>(check 1, then mobile check 2)"}:::decision
+  D1 -- "Yes" --> S01_X["S01-X Existing account"]:::screen
+  D1 -- "No" --> S02["S02 Mobile OTP"]:::screen
+  S02 -- "3 incorrect" --> S02_L["S02-L Locked"]:::screen
+  S02 -- "Verified" --> D3{"Revenue routing"}:::decision
+  D3 -- "CR below 100K / above 20M" --> O_C(["O-C Interest received (sales lead)"]):::outcome
+  D3 -- "CR 100K–20M · all freelancers" --> S03["S03 Business category"]:::screen
+  S03 --> D4{"Category eligibility"}:::decision
+  D4 -- "Restricted / review" --> O_C
+  D4 -- "Registered Business" --> R1>"S04 CR lookup → S05 person → S06 Nafath<br/>(Maps C1–C2)"]:::ref
+  D4 -- "Freelancer" --> R2>"S06 Nafath → S07 / S07-M certificate<br/>(Maps D1–D2)"]:::ref
+  R1 --> S08["S08 Business details"]:::screen
+  R2 --> S08
+  S08 --> D5{"Contract eligible?<br/>(Nafath verified)"}:::decision
+  D5 -- "No" --> O_B(["O-B Application received (manual verification)"]):::outcome
+  D5 -- "Yes" --> S09["S09 Merchant agreement"]:::screen
+  S09 -- "Accept" --> O_A(["O-A Application submitted"]):::outcome
+  S09 -- "Decline" --> S09_D["S09-D Not accepted"]:::screen
+
+  classDef screen fill:#ffffff,stroke:#111111,stroke-width:1.6px,color:#111111;
+  classDef decision fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111;
+  classDef backend fill:#e6e6e6,stroke:#666666,stroke-width:1px,color:#111111;
+  classDef external fill:#f4f4f4,stroke:#111111,stroke-width:1.4px,color:#111111;
+  classDef manual fill:#fafafa,stroke:#444444,stroke-width:1.4px,stroke-dasharray:6 4,color:#111111;
+  classDef outcome fill:#111111,stroke:#111111,stroke-width:1px,color:#ffffff;
+  classDef ref fill:#ffffff,stroke:#999999,stroke-width:1px,stroke-dasharray:2 2,color:#555555;
+
+

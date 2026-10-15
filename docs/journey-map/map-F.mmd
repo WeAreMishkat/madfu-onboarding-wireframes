@@ -1,0 +1,33 @@
+flowchart TB
+  S08["S08 Business details"]:::screen --> V1{"Fields valid?<br/>(IBAN format, VAT, URLs)"}:::decision
+  V1 -- "No" --> S08
+  V1 -- "Yes" --> D0{"Call IBAN ownership API?"}:::decision
+  D0 -- "Nafath unverified<br/>(FL: never; CR: config)" --> N1["IBAN not checked<br/>manual review"]:::manual
+  D0 -- "Nafath verified" --> X1[["IBAN ownership<br/>CR → business · FL → National ID"]]:::external
+  X1 --> D1{"Result"}:::decision
+  D1 -- "Verified" --> E1
+  D1 -- "Not verified (1st)" --> S08
+  D1 -- "Not verified (2nd)" --> M1["IBAN unverified<br/>manual financial check"]:::manual
+  D1 -- "Technical error < 3" --> S08
+  D1 -- "Technical error ×3" --> M2["IBAN pending (provider)<br/>policy decision"]:::manual
+  M1 --> E1
+  M2 --> E1
+  N1 --> E1
+  E1{"Contract eligibility<br/>Nafath verified AND<br/>no blocking review flag"}:::decision
+  E1 -- "Not allowed" --> O_B(["O-B Application received"]):::outcome
+  E1 -- "Allowed" --> S09["S09 Merchant agreement"]:::screen
+  S09 -- "Accept (simulated)" --> X2[["Contract acceptance<br/>placeholder"]]:::external
+  X2 --> O_A(["O-A Application submitted"]):::outcome
+  S09 -- "Decline → confirm" --> S09_D["S09-D Not accepted<br/>(saved, not submitted)"]:::screen
+  S09_D -- "Review again" --> S09
+  S09_D -- "Edit details" --> S08
+
+  classDef screen fill:#ffffff,stroke:#111111,stroke-width:1.6px,color:#111111;
+  classDef decision fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111;
+  classDef backend fill:#e6e6e6,stroke:#666666,stroke-width:1px,color:#111111;
+  classDef external fill:#f4f4f4,stroke:#111111,stroke-width:1.4px,color:#111111;
+  classDef manual fill:#fafafa,stroke:#444444,stroke-width:1.4px,stroke-dasharray:6 4,color:#111111;
+  classDef outcome fill:#111111,stroke:#111111,stroke-width:1px,color:#ffffff;
+  classDef ref fill:#ffffff,stroke:#999999,stroke-width:1px,stroke-dasharray:2 2,color:#555555;
+
+

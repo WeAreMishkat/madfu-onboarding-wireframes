@@ -1,0 +1,29 @@
+flowchart TB
+  S03["S03 Business category"]:::screen --> D1{"Category<br/>classification"}:::decision
+  D1 -- "Restricted" --> O_C(["O-C Sales lead"]):::outcome
+  D1 -- "Pending review<br/>(config: stop)" --> O_C
+  D1 -- "Allowed / CR-only" --> S04["S04 Business verification"]:::screen
+  S04 --> X1[["Government CR lookup"]]:::external
+  X1 --> D2{"CR result"}:::decision
+  D2 -- "Unavailable" --> RT("Auto-retry ×2, then manual ×3,<br/>then save & exit"):::backend
+  RT --> S04
+  D2 -- "Provider error → retry" --> S04
+  D2 -- "Not found" --> S01["S01 Edit CR number"]:::screen
+  D2 -- "Expired" --> F1["Flag CR_EXPIRED<br/>(may continue)"]:::manual
+  F1 --> S05
+  D2 -- "Valid" --> S05["S05 Authorized person"]:::screen
+  S05 --> B1("Filter: individuals only<br/>(companies / entities hidden)"):::backend
+  B1 --> D3{"Eligible<br/>individuals?"}:::decision
+  D3 -- "None" --> M1["Manual identity verification<br/>contract disabled"]:::manual
+  M1 --> R2>"Map F · S08 Business details"]:::ref
+  D3 -- "One or more → select exactly one" --> R1>"Map C2 · Nafath"]:::ref
+
+  classDef screen fill:#ffffff,stroke:#111111,stroke-width:1.6px,color:#111111;
+  classDef decision fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111;
+  classDef backend fill:#e6e6e6,stroke:#666666,stroke-width:1px,color:#111111;
+  classDef external fill:#f4f4f4,stroke:#111111,stroke-width:1.4px,color:#111111;
+  classDef manual fill:#fafafa,stroke:#444444,stroke-width:1.4px,stroke-dasharray:6 4,color:#111111;
+  classDef outcome fill:#111111,stroke:#111111,stroke-width:1px,color:#ffffff;
+  classDef ref fill:#ffffff,stroke:#999999,stroke-width:1px,stroke-dasharray:2 2,color:#555555;
+
+

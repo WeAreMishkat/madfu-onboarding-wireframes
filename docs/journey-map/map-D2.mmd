@@ -1,0 +1,27 @@
+flowchart TB
+  N1["S06 Nafath verified"]:::screen --> X2[["Certificate lookup<br/>by National ID"]]:::external
+  X2 --> S07["S07 Certificate selection"]:::screen
+  S07 --> D3{"Certificates?"}:::decision
+  D3 -- "Service unavailable → retry" --> S07
+  D3 -- "None found" --> S07_M["S07-M Manual certificate entry"]:::screen
+  S07_M --> F4["CERT_NOT_FOUND_MANUAL_ENTRY<br/>contract disabled"]:::manual
+  D3 -- "1+ found (attached ones disabled)<br/>select exactly one" --> B1("Reconcile certificate activity<br/>→ Madfu category"):::backend
+  B1 --> D4{"Mapped category"}:::decision
+  D4 -- "Restricted<br/>(cost already incurred)" --> O_C(["O-C Sales lead"]):::outcome
+  D4 -- "Mismatch / unmapped" --> F2["Flag CATEGORY_MISMATCH<br/>preliminary kept"]:::manual
+  D4 -- "Expired / inconsistent" --> F3["Certificate review<br/>contract disabled"]:::manual
+  D4 -- "Match" --> S08["S08 Business details"]:::screen
+  F2 --> S08
+  F3 --> S08
+  F4 --> S08
+  S08 --> R1>"Map F · details, contract, outcomes"]:::ref
+
+  classDef screen fill:#ffffff,stroke:#111111,stroke-width:1.6px,color:#111111;
+  classDef decision fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111;
+  classDef backend fill:#e6e6e6,stroke:#666666,stroke-width:1px,color:#111111;
+  classDef external fill:#f4f4f4,stroke:#111111,stroke-width:1.4px,color:#111111;
+  classDef manual fill:#fafafa,stroke:#444444,stroke-width:1.4px,stroke-dasharray:6 4,color:#111111;
+  classDef outcome fill:#111111,stroke:#111111,stroke-width:1px,color:#ffffff;
+  classDef ref fill:#ffffff,stroke:#999999,stroke-width:1px,stroke-dasharray:2 2,color:#555555;
+
+

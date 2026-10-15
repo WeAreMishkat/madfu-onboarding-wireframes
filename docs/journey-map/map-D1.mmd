@@ -1,0 +1,24 @@
+flowchart TB
+  S03["S03 Business category<br/>(preliminary)"]:::screen --> D1{"Category<br/>classification"}:::decision
+  D1 -- "Restricted / review" --> O_C(["O-C Sales lead"]):::outcome
+  D1 -- "CR-only" --> F1["Flag CR_ONLY_CATEGORY_FREELANCER<br/>(not rejected)"]:::manual
+  F1 --> S06
+  D1 -- "Allowed" --> S06["S06 Nafath<br/>(National ID from S01)"]:::screen
+  S06 --> X1[["Nafath request"]]:::external
+  X1 --> D2{"Nafath result"}:::decision
+  D2 -- "Technical failure<br/>(no attempt used)" --> S06
+  D2 -- "Rejected / timed out,<br/>1 attempt left" --> S06
+  D2 -- "2 unsuccessful" --> S07_M["S07-M Manual certificate entry"]:::screen
+  S07_M --> M1["Identity + certificate unverified<br/>IBAN collected without API<br/>contract disabled"]:::manual
+  M1 --> R2>"Map F · S08"]:::ref
+  D2 -- "Verified" --> R1>"Map D2 · certificates"]:::ref
+
+  classDef screen fill:#ffffff,stroke:#111111,stroke-width:1.6px,color:#111111;
+  classDef decision fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111;
+  classDef backend fill:#e6e6e6,stroke:#666666,stroke-width:1px,color:#111111;
+  classDef external fill:#f4f4f4,stroke:#111111,stroke-width:1.4px,color:#111111;
+  classDef manual fill:#fafafa,stroke:#444444,stroke-width:1.4px,stroke-dasharray:6 4,color:#111111;
+  classDef outcome fill:#111111,stroke:#111111,stroke-width:1px,color:#ffffff;
+  classDef ref fill:#ffffff,stroke:#999999,stroke-width:1px,stroke-dasharray:2 2,color:#555555;
+
+

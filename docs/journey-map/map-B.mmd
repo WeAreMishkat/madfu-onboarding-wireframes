@@ -1,0 +1,33 @@
+flowchart TB
+  S00["S00 Resume application"]:::screen -- "Continue" --> RES>"Last active step"]:::ref
+  S00 -- "Start new" --> S01
+  S01["S01 Start application"]:::screen --> V1{"Frontend structural<br/>validation OK?"}:::decision
+  V1 -- "No" --> S01
+  V1 -- "Yes" --> B1("Check 1: CR / National ID<br/>already registered?"):::backend
+  B1 -- "Exists" --> S01_X["S01-X Existing account"]:::screen
+  S01_X -- "Freelancer: add certificate" --> S01_F["S01-F Add certificate<br/>FUTURE FLOW"]:::manual
+  S01_X -- "Edit details" --> S01
+  B1 -- "New" --> B2("Check 2: mobile linkage<br/>(informational, never blocks)"):::backend
+  B2 --> D0{"Mobile already verified<br/>in this application?"}:::decision
+  D0 -- "Yes, unchanged" --> D3
+  D0 -- "No" --> X1[["SMS OTP service"]]:::external
+  X1 --> S02["S02 Mobile OTP"]:::screen
+  S02 -- "Incorrect (attempt < 3)" --> S02
+  S02 -- "Expired → resend" --> S02
+  S02 -- "Edit mobile" --> S01
+  S02 -- "3rd incorrect" --> S02_L["S02-L Verification locked"]:::screen
+  S02 -- "Verified" --> D3{"Revenue routing"}:::decision
+  D3 -- "CR · below SAR 100,000" --> O_C(["O-C Sales lead"]):::outcome
+  D3 -- "CR · above SAR 20,000,000" --> O_C
+  D3 -- "CR · SAR 100,000 to 20,000,000" --> S03["S03 Business category"]:::screen
+  D3 -- "Freelancer · any band" --> S03
+
+  classDef screen fill:#ffffff,stroke:#111111,stroke-width:1.6px,color:#111111;
+  classDef decision fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111;
+  classDef backend fill:#e6e6e6,stroke:#666666,stroke-width:1px,color:#111111;
+  classDef external fill:#f4f4f4,stroke:#111111,stroke-width:1.4px,color:#111111;
+  classDef manual fill:#fafafa,stroke:#444444,stroke-width:1.4px,stroke-dasharray:6 4,color:#111111;
+  classDef outcome fill:#111111,stroke:#111111,stroke-width:1px,color:#ffffff;
+  classDef ref fill:#ffffff,stroke:#999999,stroke-width:1px,stroke-dasharray:2 2,color:#555555;
+
+

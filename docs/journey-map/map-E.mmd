@@ -1,0 +1,35 @@
+flowchart LR
+  subgraph LEAD["Sales / business review (Outcome C)"]
+    A1["Revenue outside CR range"]:::manual
+    A2["Restricted category (pre-cost)"]:::manual
+    A3["Category pending review (pre-cost)"]:::manual
+    A4["Certificate maps to restricted category<br/>(post-Nafath, cost recorded)"]:::manual
+  end
+  subgraph MV["Manual verification (Outcome B)"]
+    B1["CR has no eligible individual"]:::manual
+    B2["Nafath: 2 unsuccessful attempts (CR)"]:::manual
+    B3["Nafath: 2 unsuccessful attempts (Freelancer)<br/>+ manual certificate"]:::manual
+    B4["Verified freelancer, no certificate found<br/>+ manual certificate"]:::manual
+    B5["Expired / inconsistent certificate"]:::manual
+  end
+  subgraph FLAG["Flag only — journey continues, contract allowed"]
+    C1["CR expired"]:::manual
+    C2["IBAN failed twice → manual financial verification"]:::manual
+    C3["IBAN provider outage → pending (policy TBD)"]:::manual
+    C4["Freelancer chose CR-only category"]:::manual
+    C5["Certificate / category mismatch"]:::manual
+    C6["Mobile linked to other accounts"]:::manual
+  end
+  LEAD --> O_C(["O-C Interest received"]):::outcome
+  MV --> O_B(["O-B Application received"]):::outcome
+  FLAG --> S09["S09 Agreement → O-A"]:::screen
+
+  classDef screen fill:#ffffff,stroke:#111111,stroke-width:1.6px,color:#111111;
+  classDef decision fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111;
+  classDef backend fill:#e6e6e6,stroke:#666666,stroke-width:1px,color:#111111;
+  classDef external fill:#f4f4f4,stroke:#111111,stroke-width:1.4px,color:#111111;
+  classDef manual fill:#fafafa,stroke:#444444,stroke-width:1.4px,stroke-dasharray:6 4,color:#111111;
+  classDef outcome fill:#111111,stroke:#111111,stroke-width:1px,color:#ffffff;
+  classDef ref fill:#ffffff,stroke:#999999,stroke-width:1px,stroke-dasharray:2 2,color:#555555;
+
+

@@ -1,0 +1,39 @@
+{
+  "name": "madfu-onboarding-wireframes",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Madfu merchant onboarding — interactive low-fidelity wireframe system (prototype, journey maps, annotated PDF).",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --port 4391 --strictPort",
+    "typecheck": "tsc -b",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "test": "npm run test:unit && npm run test:e2e",
+    "docs": "tsx scripts/generate-docs.ts",
+    "pdf": "tsx scripts/generate-pdf/generate.ts",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"tests/**/*.ts\" \"scripts/**/*.ts\" \"*.ts\""
+  },
+  "dependencies": {
+    "mermaid": "^11.17.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.6"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^26.6.5",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^4.7.0",
+    "prettier": "^3.9.10",
+    "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.15",
+    "typescript": "~5.8",
+    "vite": "^6.4.4",
+    "vitest": "^3.2.7"
+  }
+}

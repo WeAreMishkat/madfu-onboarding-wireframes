@@ -1,0 +1,22 @@
+flowchart TB
+  S05["S05 Authorized person<br/>(one selected)"]:::screen --> S06["S06 Nafath"]:::screen
+  S06 -- "Send request" --> X2[["Nafath request<br/>2-digit number"]]:::external
+  X2 --> D4{"Nafath result"}:::decision
+  D4 -- "Technical failure<br/>(no attempt used)" --> S06
+  D4 -- "Verified" --> S08["S08 Business details"]:::screen
+  D4 -- "Rejected / timed out<br/>attempts used = 1" --> D5{"Retry or<br/>change person?"}:::decision
+  D5 -- "Retry same person" --> S06
+  D5 -- "Change person<br/>(shared counter kept)" --> S05
+  D4 -- "Rejected / timed out<br/>attempts used = 2" --> M2["NAFATH_MANUAL_VERIFICATION<br/>contract disabled"]:::manual
+  M2 --> S08
+  S08 --> R1>"Map F · details, contract, outcomes"]:::ref
+
+  classDef screen fill:#ffffff,stroke:#111111,stroke-width:1.6px,color:#111111;
+  classDef decision fill:#ffffff,stroke:#111111,stroke-width:1.2px,color:#111111;
+  classDef backend fill:#e6e6e6,stroke:#666666,stroke-width:1px,color:#111111;
+  classDef external fill:#f4f4f4,stroke:#111111,stroke-width:1.4px,color:#111111;
+  classDef manual fill:#fafafa,stroke:#444444,stroke-width:1.4px,stroke-dasharray:6 4,color:#111111;
+  classDef outcome fill:#111111,stroke:#111111,stroke-width:1px,color:#ffffff;
+  classDef ref fill:#ffffff,stroke:#999999,stroke-width:1px,stroke-dasharray:2 2,color:#555555;
+
+
