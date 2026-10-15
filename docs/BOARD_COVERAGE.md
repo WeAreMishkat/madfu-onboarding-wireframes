@@ -174,7 +174,7 @@ None — every engine transition is represented; every node is reachable, connec
 | e.s01-loop | Validation errors | s.S01 | s.S01 | loop | 0 |
 | e.identity-yes | Yes · stop (mobile check skipped) | d.identity | s.S01X | flow | 2 |
 | e.identity-no | No | d.identity | p.mobile | flow | 27 |
-| e.mobile-sms | Mobile not yet verified | p.mobile | x.sms | flow | 27 |
+| e.mobile-sms | Needs OTP | p.mobile | x.sms | flow | 27 |
 | e.mobile-skip | Same mobile already verified in this application → skip OTP | p.mobile | d.revenue | flow | 0 |
 | e.sms-s02 | (bus) | x.sms | s.S02 | flow | 27 |
 | e.s02-loop | Incorrect (< 3) · expired → resend | s.S02 | s.S02 | loop | 1 |

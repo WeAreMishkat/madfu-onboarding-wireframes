@@ -659,7 +659,7 @@ edge({
   id: 'e.mobile-sms',
   source: 'p.mobile',
   target: 'x.sms',
-  label: 'Mobile not yet verified',
+  label: 'Needs OTP',
   condition: 'OTP required for this mobile.',
   guard: ({ app }) => has(app, 'OTP_SENT'),
 });
