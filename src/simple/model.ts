@@ -152,7 +152,7 @@ export const SIMPLE_EDGES: SimpleEdge[] = [
       [busX, SH('category', 'r')[1]],
       [busX, SH('cr.verify', 'l')[1]],
     ],
-    labelAt: [busX, 560],
+    labelAt: [busX, 660],
   },
   {
     id: 'category-fl',
