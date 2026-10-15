@@ -6,49 +6,104 @@
 
 | Suite | Passed | Failed | Total |
 | --- | --- | --- | --- |
-| Unit — rules, engine, all scenarios at engine level (Vitest) | n/a | n/a | n/a |
-| End-to-end — real UI in Chromium (Playwright) | n/a | n/a | n/a |
+| Unit — rules, engine, all scenarios at engine level (Vitest) | 55 | 0 | 55 |
+| End-to-end — real UI in Chromium (Playwright) | 84 | 0 | 84 |
 
-
+Last end-to-end run: 2026-10-15T16:10:02.915Z. Flaky: 0.
 
 ## Scenario coverage (each driven through the real screens)
 
 | # | Scenario | Expected end | Asserted statuses / flags | E2E |
 | --- | --- | --- | --- | --- |
-| 1 | CR — Self-onboarding, all verified | O-A | CONTRACT_ACCEPTED, APPLICATION_SUBMITTED | not run |
-| 2 | CR — Below-revenue sales lead | O-C | SALES_LEAD, SALES_LEAD_REVENUE, no paid calls | not run |
-| 3 | CR — Above-revenue sales lead | O-C | SALES_LEAD, SALES_LEAD_REVENUE, no paid calls | not run |
-| 4 | CR — Duplicate account | S01-X | no paid calls | not run |
-| 5 | CR — Blocked category | O-C | SALES_LEAD, CATEGORY_REVIEW_REQUIRED, CATEGORY_RESTRICTED, no paid calls | not run |
-| 6 | CR — Expired registration | O-A | CR_EXPIRED, CONTRACT_ACCEPTED, APPLICATION_SUBMITTED, CR_EXPIRED | not run |
-| 7 | CR — Nafath rejected twice | O-B | NAFATH_MANUAL_VERIFICATION, APPLICATION_SUBMITTED, NAFATH_MANUAL_VERIFICATION | not run |
-| 8 | CR — Nafath timeout twice | O-B | NAFATH_MANUAL_VERIFICATION, NAFATH_MANUAL_VERIFICATION | not run |
-| 9 | CR — Nafath verified, IBAN failed twice | O-A | IBAN_VERIFICATION_PENDING, CONTRACT_ACCEPTED, IBAN_UNVERIFIED_MANUAL_FINANCIAL_REVIEW | not run |
-| 10 | CR — No individual authorized persons | O-B | NAFATH_MANUAL_VERIFICATION, NO_ELIGIBLE_AUTHORISED_PERSON | not run |
-| 11 | Freelancer — All verified | O-A | CONTRACT_ACCEPTED, APPLICATION_SUBMITTED | not run |
-| 12 | Freelancer — Multiple certificates | O-A | CONTRACT_ACCEPTED | not run |
-| 13 | Freelancer — Duplicate National ID | S01-X | no paid calls | not run |
-| 14 | Freelancer — Nafath failed twice | O-B | NAFATH_MANUAL_VERIFICATION, IBAN_VERIFICATION_PENDING, CERTIFICATE_REVIEW_REQUIRED, CERT_MANUAL_ENTRY_UNVERIFIED, IBAN_NOT_CHECKED_NAFATH_UNVERIFIED | not run |
-| 15 | Freelancer — Manual certificate entry | O-B | CERT_MANUAL_ENTRY_UNVERIFIED | not run |
-| 16 | Freelancer — Blocked category | O-C | CATEGORY_RESTRICTED, no paid calls | not run |
-| 17 | Freelancer — CR-only category flag | O-A | CATEGORY_REVIEW_REQUIRED, CONTRACT_ACCEPTED, CR_ONLY_CATEGORY_FREELANCER, CATEGORY_MISMATCH | not run |
-| 18 | Freelancer — IBAN verification failed twice | O-A | IBAN_VERIFICATION_PENDING, CONTRACT_ACCEPTED, IBAN_UNVERIFIED_MANUAL_FINANCIAL_REVIEW | not run |
-| 19 | Any applicant — OTP errors | S02-L | no paid calls | not run |
-| 20 | Any applicant — API failure and retry | O-A | CONTRACT_ACCEPTED | not run |
-| 21 | Any applicant — Resume incomplete application | O-A | — | not run |
-| 22 | Eligible applicant — Contract declined | S09-D | CONTRACT_PENDING, CONTRACT_DECLINED | not run |
-| 23 | Freelancer — No certificates returned | O-B | CERTIFICATE_REVIEW_REQUIRED, CERT_NOT_FOUND_MANUAL_ENTRY | not run |
-| 24 | Freelancer — Certificate/category mismatch | O-A | CATEGORY_REVIEW_REQUIRED, CONTRACT_ACCEPTED, CATEGORY_MISMATCH | not run |
-| 25 | Freelancer — Certificate maps to restricted category | O-C | CATEGORY_RESTRICTED_POST_NAFATH | not run |
-| 26 | Any applicant — IBAN provider outage | O-A | IBAN_VERIFICATION_PENDING, IBAN_VERIFICATION_PENDING_PROVIDER | not run |
-| 27 | Any applicant — Nafath technical failure then verified | O-A | — | not run |
-| 28 | Any applicant — Category pending business review | O-C | CATEGORY_REVIEW_REQUIRED, no paid calls | not run |
-| 29 | Any applicant — Mobile reused across identities | O-A | MOBILE_LINKED_TO_OTHER_ACCOUNTS | not run |
+| 1 | CR — Self-onboarding, all verified | O-A | CONTRACT_ACCEPTED, APPLICATION_SUBMITTED | PASS |
+| 2 | CR — Below-revenue sales lead | O-C | SALES_LEAD, SALES_LEAD_REVENUE, no paid calls | PASS |
+| 3 | CR — Above-revenue sales lead | O-C | SALES_LEAD, SALES_LEAD_REVENUE, no paid calls | PASS |
+| 4 | CR — Duplicate account | S01-X | no paid calls | PASS |
+| 5 | CR — Blocked category | O-C | SALES_LEAD, CATEGORY_REVIEW_REQUIRED, CATEGORY_RESTRICTED, no paid calls | PASS |
+| 6 | CR — Expired registration | O-A | CR_EXPIRED, CONTRACT_ACCEPTED, APPLICATION_SUBMITTED, CR_EXPIRED | PASS |
+| 7 | CR — Nafath rejected twice | O-B | NAFATH_MANUAL_VERIFICATION, APPLICATION_SUBMITTED, NAFATH_MANUAL_VERIFICATION | PASS |
+| 8 | CR — Nafath timeout twice | O-B | NAFATH_MANUAL_VERIFICATION, NAFATH_MANUAL_VERIFICATION | PASS |
+| 9 | CR — Nafath verified, IBAN failed twice | O-A | IBAN_VERIFICATION_PENDING, CONTRACT_ACCEPTED, IBAN_UNVERIFIED_MANUAL_FINANCIAL_REVIEW | PASS |
+| 10 | CR — No individual authorized persons | O-B | NAFATH_MANUAL_VERIFICATION, NO_ELIGIBLE_AUTHORISED_PERSON | PASS |
+| 11 | Freelancer — All verified | O-A | CONTRACT_ACCEPTED, APPLICATION_SUBMITTED | PASS |
+| 12 | Freelancer — Multiple certificates | O-A | CONTRACT_ACCEPTED | PASS |
+| 13 | Freelancer — Duplicate National ID | S01-X | no paid calls | PASS |
+| 14 | Freelancer — Nafath failed twice | O-B | NAFATH_MANUAL_VERIFICATION, IBAN_VERIFICATION_PENDING, CERTIFICATE_REVIEW_REQUIRED, CERT_MANUAL_ENTRY_UNVERIFIED, IBAN_NOT_CHECKED_NAFATH_UNVERIFIED | PASS |
+| 15 | Freelancer — Manual certificate entry | O-B | CERT_MANUAL_ENTRY_UNVERIFIED | PASS |
+| 16 | Freelancer — Blocked category | O-C | CATEGORY_RESTRICTED, no paid calls | PASS |
+| 17 | Freelancer — CR-only category flag | O-A | CATEGORY_REVIEW_REQUIRED, CONTRACT_ACCEPTED, CR_ONLY_CATEGORY_FREELANCER, CATEGORY_MISMATCH | PASS |
+| 18 | Freelancer — IBAN verification failed twice | O-A | IBAN_VERIFICATION_PENDING, CONTRACT_ACCEPTED, IBAN_UNVERIFIED_MANUAL_FINANCIAL_REVIEW | PASS |
+| 19 | Any applicant — OTP errors | S02-L | no paid calls | PASS |
+| 20 | Any applicant — API failure and retry | O-A | CONTRACT_ACCEPTED | PASS |
+| 21 | Any applicant — Resume incomplete application | O-A | — | PASS |
+| 22 | Eligible applicant — Contract declined | S09-D | CONTRACT_PENDING, CONTRACT_DECLINED | PASS |
+| 23 | Freelancer — No certificates returned | O-B | CERTIFICATE_REVIEW_REQUIRED, CERT_NOT_FOUND_MANUAL_ENTRY | PASS |
+| 24 | Freelancer — Certificate/category mismatch | O-A | CATEGORY_REVIEW_REQUIRED, CONTRACT_ACCEPTED, CATEGORY_MISMATCH | PASS |
+| 25 | Freelancer — Certificate maps to restricted category | O-C | CATEGORY_RESTRICTED_POST_NAFATH | PASS |
+| 26 | Any applicant — IBAN provider outage | O-A | IBAN_VERIFICATION_PENDING, IBAN_VERIFICATION_PENDING_PROVIDER | PASS |
+| 27 | Any applicant — Nafath technical failure then verified | O-A | — | PASS |
+| 28 | Any applicant — Category pending business review | O-C | CATEGORY_REVIEW_REQUIRED, no paid calls | PASS |
+| 29 | Any applicant — Mobile reused across identities | O-A | MOBILE_LINKED_TO_OTHER_ACCOUNTS | PASS |
 
 ## Rule checks (end-to-end)
 
 | Check | Result |
 | --- | --- |
+| board is the home page and renders every node, connection and live wireframe | PASS |
+| exported board: no node overlaps and no label covers a node or another label | PASS |
+| search finds screens and decisions and opens their details | PASS |
+| details panel lists purpose, fields, validations, actions, next destinations; preview opens and keeps board position | PASS |
+| every screen node preview opens | PASS |
+| zoom, pan and fit change the viewport | PASS |
+| sub-flows collapse and reset restores everything | PASS |
+| journey highlight #1 — CR — Self-onboarding, all verified | PASS |
+| journey highlight #2 — CR — Below-revenue sales lead | PASS |
+| journey highlight #3 — CR — Above-revenue sales lead | PASS |
+| journey highlight #4 — CR — Duplicate account | PASS |
+| journey highlight #5 — CR — Blocked category | PASS |
+| journey highlight #6 — CR — Expired registration | PASS |
+| journey highlight #7 — CR — Nafath rejected twice | PASS |
+| journey highlight #8 — CR — Nafath timeout twice | PASS |
+| journey highlight #9 — CR — Nafath verified, IBAN failed twice | PASS |
+| journey highlight #10 — CR — No individual authorized persons | PASS |
+| journey highlight #11 — Freelancer — All verified | PASS |
+| journey highlight #12 — Freelancer — Multiple certificates | PASS |
+| journey highlight #13 — Freelancer — Duplicate National ID | PASS |
+| journey highlight #14 — Freelancer — Nafath failed twice | PASS |
+| journey highlight #15 — Freelancer — Manual certificate entry | PASS |
+| journey highlight #16 — Freelancer — Blocked category | PASS |
+| journey highlight #17 — Freelancer — CR-only category flag | PASS |
+| journey highlight #18 — Freelancer — IBAN verification failed twice | PASS |
+| journey highlight #19 — Any applicant — OTP errors | PASS |
+| journey highlight #20 — Any applicant — API failure and retry | PASS |
+| journey highlight #21 — Any applicant — Resume incomplete application | PASS |
+| journey highlight #22 — Eligible applicant — Contract declined | PASS |
+| journey highlight #23 — Freelancer — No certificates returned | PASS |
+| journey highlight #24 — Freelancer — Certificate/category mismatch | PASS |
+| journey highlight #25 — Freelancer — Certificate maps to restricted category | PASS |
+| journey highlight #26 — Any applicant — IBAN provider outage | PASS |
+| journey highlight #27 — Any applicant — Nafath technical failure then verified | PASS |
+| journey highlight #28 — Any applicant — Category pending business review | PASS |
+| journey highlight #29 — Any applicant — Mobile reused across identities | PASS |
+| journey step navigation reaches the outcome | PASS |
+| prototype links work from the board | PASS |
+| board exports are downloadable | PASS |
+| coverage page reports zero problems | PASS |
+| entry: required-field and format validation block the transition | PASS |
+| entry: applicant type switches the identification field and resets it | PASS |
+| revenue routing: CR outside range never sees self-onboarding screens | PASS |
+| duplicate detection: identity checked before mobile, mobile skipped | PASS |
+| authorized persons: individuals only, masked, single select | PASS |
+| nafath: two-digit number shown; failure disables the contract | PASS |
+| certificates: single select, attached certificate cannot be chosen | PASS |
+| back navigation keeps verified OTP; refresh keeps progress | PASS |
+| deep link to a later screen redirects to the current step | PASS |
+| editing the IBAN invalidates its verification result | PASS |
+| completed application cannot be resubmitted | PASS |
+| every screen has a gallery state and every gallery state renders | PASS |
+| documentation routes render (maps, rules, handover, overview) | PASS |
+| PDF download is available | PASS |
+| stored data stays synthetic | PASS |
 
 ## Required checks → where they are covered
 
