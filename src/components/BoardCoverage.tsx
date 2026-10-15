@@ -69,7 +69,7 @@ export function BoardCoverage() {
         <Table
           head={['Journey', 'Engine screen trace', 'Ends at', 'Board steps', 'Status']}
           rows={report.journeys.map((j) => [
-            <Link key="j" className="underline" to={`/?journey=${j.id}`}>
+            <Link key="j" className="underline" to={`/detailed?journey=${j.id}`}>
               {j.title}
             </Link>,
             j.trace,

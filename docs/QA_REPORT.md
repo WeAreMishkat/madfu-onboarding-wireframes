@@ -6,10 +6,10 @@
 
 | Suite | Passed | Failed | Total |
 | --- | --- | --- | --- |
-| Unit — rules, engine, all scenarios at engine level (Vitest) | 55 | 0 | 55 |
-| End-to-end — real UI in Chromium (Playwright) | 84 | 0 | 84 |
+| Unit — rules, engine, all scenarios at engine level (Vitest) | 66 | 0 | 66 |
+| End-to-end — real UI in Chromium (Playwright) | 98 | 0 | 98 |
 
-Last end-to-end run: 2026-10-15T16:10:02.915Z. Flaky: 0.
+Last end-to-end run: 2026-10-15T17:59:26.560Z. Flaky: 0.
 
 ## Scenario coverage (each driven through the real screens)
 
@@ -49,7 +49,7 @@ Last end-to-end run: 2026-10-15T16:10:02.915Z. Flaky: 0.
 
 | Check | Result |
 | --- | --- |
-| board is the home page and renders every node, connection and live wireframe | PASS |
+| detailed workflow renders every node, connection and live wireframe | PASS |
 | exported board: no node overlaps and no label covers a node or another label | PASS |
 | search finds screens and decisions and opens their details | PASS |
 | details panel lists purpose, fields, validations, actions, next destinations; preview opens and keeps board position | PASS |
@@ -104,6 +104,20 @@ Last end-to-end run: 2026-10-15T16:10:02.915Z. Flaky: 0.
 | documentation routes render (maps, rules, handover, overview) | PASS |
 | PDF download is available | PASS |
 | stored data stays synthetic | PASS |
+| simplified board is the default landing view with every screen as a real wireframe | PASS |
+| whole canvas fits when zoomed out and every screen is in view | PASS |
+| zoom in keeps wireframe text readable; pan and reset work | PASS |
+| click a screen to enlarge it | PASS |
+| highlight: Registered Business — Self-onboarding | PASS |
+| highlight: Registered Business — Sales lead | PASS |
+| highlight: Registered Business — Manual verification | PASS |
+| highlight: Registered Business — Restricted category | PASS |
+| highlight: Freelancer — Successful onboarding | PASS |
+| highlight: Freelancer — Manual verification | PASS |
+| highlight: Freelancer — Restricted category | PASS |
+| export layout: no overlaps, labels clear, arrows never cross a screen | PASS |
+| simplified exports are downloadable | PASS |
+| navigation: Detailed Workflow and Interactive Journey remain available; old deep links still open the workflow | PASS |
 
 ## Required checks → where they are covered
 

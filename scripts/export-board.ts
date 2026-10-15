@@ -14,9 +14,14 @@ import { chromium } from '@playwright/test';
 
 const ROOT = resolve(import.meta.dirname, '..');
 const PORT = Number(process.env.BOARD_PORT ?? 4181);
-const PDF = 'Madfu_Onboarding_Master_Board.pdf';
-const SVG = 'Madfu_Onboarding_Master_Board.svg';
-const PNG = 'Madfu_Onboarding_Master_Board_overview.png';
+// Default: Detailed Workflow. `--simple` exports the Simplified Master Board.
+const SIMPLE = process.argv.includes('--simple');
+const NAME = SIMPLE ? 'Madfu_Onboarding_Simplified_Master_Board' : 'Madfu_Onboarding_Master_Board';
+const ROUTE = SIMPLE ? '#/simple/export' : '#/board/export';
+const READY = SIMPLE ? '__SIMPLE_READY__' : '__BOARD_READY__';
+const PDF = `${NAME}.pdf`;
+const SVG = `${NAME}.svg`;
+const PNG = `${NAME}_overview.png`;
 
 async function waitForServer(url: string) {
   for (let i = 0; i < 100; i++) {
@@ -38,7 +43,7 @@ async function main() {
     await waitForServer(base);
     const browser = await chromium.launch();
     const probe = await browser.newPage();
-    await probe.goto(`${base}#/board/export`);
+    await probe.goto(`${base}${ROUTE}`);
     const size = await probe.evaluate(() => {
       const el = document.querySelector('[data-testid="board-export"]') as HTMLElement;
       return { w: el.offsetWidth, h: el.offsetHeight };
@@ -46,12 +51,12 @@ async function main() {
     await probe.close();
     const page = await browser.newPage({ viewport: { width: size.w, height: size.h } });
     page.on('pageerror', (e) => console.error('[page error]', e.message));
-    await page.goto(`${base}#/board/export`);
-    await page.waitForFunction(() => (window as unknown as { __BOARD_READY__?: boolean }).__BOARD_READY__ === true, undefined, { timeout: 180_000 });
+    await page.goto(`${base}${ROUTE}`);
+    await page.waitForFunction(`window.${READY} === true`, undefined, { timeout: 180_000 });
     const counts = await page.evaluate(() => ({
       nodes: document.querySelectorAll('.react-flow__node').length,
       edges: document.querySelectorAll('.react-flow__edge').length,
-      labels: document.querySelectorAll('[data-testid^="board-edge-label-"]').length,
+      labels: document.querySelectorAll('[data-testid^="board-edge-label-"], [data-testid^="simple-label-"]').length,
     }));
     mkdirSync(resolve(ROOT, 'deliverables'), { recursive: true });
     const pdfPath = resolve(ROOT, 'deliverables', PDF);

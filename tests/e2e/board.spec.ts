@@ -11,15 +11,15 @@ const probe = readFileSync(resolve(import.meta.dirname, 'overlap-probe.js'), 'ut
 const screenNodes = BOARD_NODES.filter((n) => n.screenId);
 
 async function openBoard(page: Page, query = '') {
-  await page.goto(`./#/${query}`);
+  await page.goto(`./#/detailed${query}`);
   await expect(page.getByTestId('master-board')).toHaveAttribute('data-ready', '1', { timeout: 30_000 });
 }
 
 const viewportTransform = (page: Page) => page.locator('.react-flow__viewport').evaluate((el) => (el as HTMLElement).style.transform);
 
-test('board is the home page and renders every node, connection and live wireframe', async ({ page }) => {
+test('detailed workflow renders every node, connection and live wireframe', async ({ page }) => {
   await openBoard(page);
-  await expect(page.getByTestId('nav-master-board')).toHaveClass(/bg-white/);
+  await expect(page.getByTestId('nav-detailed-workflow')).toHaveClass(/bg-white/);
   await expect(page.locator('.react-flow__node')).toHaveCount(BOARD_NODES.length + 7); // + 5 lanes, header, assumptions
   await expect(page.locator('.react-flow__edge')).toHaveCount(BOARD_EDGES.length);
   for (const n of screenNodes) await expect(page.getByTestId(`board-mini-${n.id}`).getByTestId('merchant-frame'), n.id).toHaveCount(1);

@@ -454,7 +454,7 @@ write(
 
 ${GENERATED}
 
-Interactive board: ${PROJECT_META.siteUrl} · Exports: [PDF](../deliverables/Madfu_Onboarding_Master_Board.pdf) · [SVG](../deliverables/Madfu_Onboarding_Master_Board.svg)
+Detailed Workflow: ${PROJECT_META.siteUrl}#/detailed · Exports: [PDF](../deliverables/Madfu_Onboarding_Master_Board.pdf) · [SVG](../deliverables/Madfu_Onboarding_Master_Board.svg)
 
 ## How the board stays in sync with the implementation
 
@@ -542,7 +542,7 @@ ${table(
 
 ${table(
   ['Journey', 'Engine screen trace', 'Ends at', 'Board steps', 'Status', 'Board link'],
-  cov.journeys.map((j) => [j.title, j.trace, j.outcome, j.steps, j.ok ? 'Mapped' : j.errors.join('; '), `${PROJECT_META.siteUrl}#/?journey=${j.id}`]),
+  cov.journeys.map((j) => [j.title, j.trace, j.outcome, j.steps, j.ok ? 'Mapped' : j.errors.join('; '), `${PROJECT_META.siteUrl}#/detailed?journey=${j.id}`]),
 )}
 
 ## Observed screen transitions

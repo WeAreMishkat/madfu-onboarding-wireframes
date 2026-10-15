@@ -3,7 +3,7 @@
  * Every customer-facing screen is composed from these primitives so the
  * prototype, screen gallery and PDF stay visually consistent.
  */
-import { useId, type ReactNode } from 'react';
+import { useId, type ReactNode, createContext, useContext } from 'react';
 
 const cx = (...c: (string | false | undefined | null)[]) => c.filter(Boolean).join(' ');
 
@@ -392,7 +392,12 @@ export function ErrorSummary({ errors }: { errors: Record<string, string> }) {
 }
 
 /** Prototype-only development simulator strip. Visually distinct (dashed) and labelled. */
+/** Presentation mode (Simplified Master Board): hides prototype-only development tools. Off by default. */
+export const PresentationContext = createContext(false);
+
 export function DevSimulator({ children, note }: { children: ReactNode; note?: string }) {
+  const presentation = useContext(PresentationContext);
+  if (presentation) return null;
   return (
     <div
       data-testid="dev-simulator"

@@ -15,7 +15,8 @@
     "docs": "tsx scripts/generate-docs.ts",
     "pdf": "tsx scripts/generate-pdf/generate.ts",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"tests/**/*.ts\" \"scripts/**/*.ts\" \"*.ts\"",
-    "board:export": "tsx scripts/export-board.ts"
+    "board:export": "tsx scripts/export-board.ts",
+    "simple:export": "tsx scripts/export-board.ts --simple"
   },
   "dependencies": {
     "@xyflow/react": "^12.12.0",

@@ -1,4 +1,4 @@
-import { HashRouter, NavLink, Route, Routes, useLocation } from 'react-router-dom';
+import { HashRouter, NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { OverviewPage } from '../pages/OverviewPage';
 import { PrototypePage } from '../pages/PrototypePage';
 import { GalleryIndexPage, GalleryStatePage } from '../pages/GalleryPage';
@@ -7,12 +7,14 @@ import { DocsPage } from '../pages/DocsPage';
 import { PrintPage } from '../pages/PrintPage';
 import { BOARD_PDF, BOARD_SVG, BoardPage } from '../pages/BoardPage';
 import { BoardExportPage } from '../pages/BoardExportPage';
+import { SIMPLE_PDF, SIMPLE_SVG, SimpleBoardExportPage, SimpleBoardPage } from '../simple/SimpleBoard';
 import { PROJECT_META } from './meta';
 
 export const PDF_FILENAME = PROJECT_META.pdfFilename;
 
 const PRIMARY = [
-  { to: '/', label: 'Master Board', end: true },
+  { to: '/', label: 'Simplified Master Board', end: true },
+  { to: '/detailed', label: 'Detailed Workflow' },
   { to: '/prototype', label: 'Interactive Journey' },
   { to: '/docs', label: 'Documentation' },
 ];
@@ -55,12 +57,25 @@ function TopBar() {
           </nav>
         </div>
         <div className="flex items-center gap-2">
-          <a className="rounded border border-neutral-500 px-3 py-1.5 hover:bg-neutral-700" href={`./${BOARD_PDF}`} download data-testid="download-board-pdf">
-            Board PDF
-          </a>
-          <a className="rounded border border-neutral-500 px-3 py-1.5 hover:bg-neutral-700" href={`./${BOARD_SVG}`} download>
-            Board SVG
-          </a>
+          {location.pathname.startsWith('/detailed') ? (
+            <>
+              <a className="rounded border border-neutral-500 px-3 py-1.5 hover:bg-neutral-700" href={`./${BOARD_PDF}`} download data-testid="download-board-pdf">
+                Workflow PDF
+              </a>
+              <a className="rounded border border-neutral-500 px-3 py-1.5 hover:bg-neutral-700" href={`./${BOARD_SVG}`} download>
+                Workflow SVG
+              </a>
+            </>
+          ) : (
+            <>
+              <a className="rounded border border-neutral-500 px-3 py-1.5 hover:bg-neutral-700" href={`./${SIMPLE_PDF}`} download data-testid="download-simple-pdf">
+                Board PDF
+              </a>
+              <a className="rounded border border-neutral-500 px-3 py-1.5 hover:bg-neutral-700" href={`./${SIMPLE_SVG}`} download>
+                Board SVG
+              </a>
+            </>
+          )}
           <a className="rounded border border-neutral-500 px-3 py-1.5 hover:bg-neutral-700" href={`./${PDF_FILENAME}`} download data-testid="download-pdf">
             Wireframes PDF
           </a>
@@ -84,14 +99,24 @@ function TopBar() {
   );
 }
 
+/** Home = Simplified Master Board. Older Detailed-Workflow deep links (#/?journey= / ?node=) keep working. */
+function HomeRoute() {
+  const location = useLocation();
+  const q = new URLSearchParams(location.search);
+  if (q.has('journey') || q.has('node')) return <Navigate to={`/detailed${location.search}`} replace />;
+  return <SimpleBoardPage />;
+}
+
 function Shell() {
   const location = useLocation();
-  const bare = location.pathname.startsWith('/print') || location.pathname.startsWith('/board/export');
+  const bare = location.pathname.startsWith('/print') || location.pathname.endsWith('/export');
   return (
     <div className="min-h-screen bg-white">
       {!bare && <TopBar />}
       <Routes>
-        <Route path="/" element={<BoardPage />} />
+        <Route path="/" element={<HomeRoute />} />
+        <Route path="/simple/export" element={<SimpleBoardExportPage />} />
+        <Route path="/detailed" element={<BoardPage />} />
         <Route path="/board" element={<BoardPage />} />
         <Route path="/board/export" element={<BoardExportPage />} />
         <Route path="/overview" element={<OverviewPage />} />
@@ -104,7 +129,7 @@ function Shell() {
         <Route path="/docs" element={<DocsPage />} />
         <Route path="/docs/:tab" element={<DocsPage />} />
         <Route path="/print" element={<PrintPage />} />
-        <Route path="*" element={<BoardPage />} />
+        <Route path="*" element={<HomeRoute />} />
       </Routes>
     </div>
   );
